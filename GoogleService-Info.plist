@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>420962496553-q6u44521gclgm41u2m5blvk29s8jvp5t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.420962496553-q6u44521gclgm41u2m5blvk29s8jvp5t</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA95Z-lQMqHjYIAH4xEC8VILIwycLU1QIk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>420962496553</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.Programtically-Twitter</string>
+	<key>PROJECT_ID</key>
+	<string>programaticallytwitter</string>
+	<key>STORAGE_BUCKET</key>
+	<string>programaticallytwitter.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:420962496553:ios:a84880c79cfa8138ae6c38</string>
+	<key>DATABASE_URL</key>
+	<string>https://programaticallytwitter.firebaseio.com</string>
+</dict>
+</plist>
