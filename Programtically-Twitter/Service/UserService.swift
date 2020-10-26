@@ -58,8 +58,10 @@ class UserService {
         guard  let currentuid = Auth.auth().currentUser?.uid else {
             return
         }
-        REF_USER_FOLLOWING.child(currentuid).child(uid).removeValue  { (err, ref) in
-            REF_USER_FOLLOWERS.child(uid).removeValue(completionBlock: compiltion)
+        REF_USER_FOLLOWING.child(currentuid).child(uid).removeValue{ (err, ref) in
+            REF_USER_FOLLOWERS.child(uid).removeValue { (err, ref) in
+                print("Logcat \(ref)")
+            }
         }
         
     }
@@ -94,5 +96,13 @@ class UserService {
             }
         }
         
+    }
+    
+    func fetchUser(withusername username : String, complition : @escaping (User) -> Void)  {
+        REF_USER_USERNAMES.child(username).observeSingleEvent(of: .value) { (snapshot) in
+            
+            guard let uid = snapshot.value as? String else { return }
+            self.fetchuser(uid: uid,complition: complition)
+        }
     }
 }

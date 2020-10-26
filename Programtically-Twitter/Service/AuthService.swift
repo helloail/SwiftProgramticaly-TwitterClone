@@ -23,7 +23,8 @@ struct AuthService {
     static let shared = AuthService()
     
     func LoginUser(withEmail email : String, password : String, complition :  AuthDataResultCallback?)  {
-        Auth.auth().signIn(withEmail: email, password: password,completion: complition) 
+        Auth.auth().signIn(withEmail: email, password: password,completion: complition)
+        
         
     }
     

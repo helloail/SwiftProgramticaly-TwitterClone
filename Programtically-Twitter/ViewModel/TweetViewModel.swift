@@ -34,6 +34,14 @@ struct TweetViewModel {
     var username : String {
         return "@\(user.username)"
     }
+    var likeButtonTintCOlor : UIColor {
+        return tweet.didlike ? .red : .lightGray
+    }
+    var likeButtonImage : UIImage {
+        let imageName = tweet.didlike ? "like_filled" : "like"
+        return UIImage(named: imageName)!
+    }
+    
     
     var headerTtimestamp : String {
         let formater = DateFormatter()

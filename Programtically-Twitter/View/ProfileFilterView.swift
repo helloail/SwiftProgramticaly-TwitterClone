@@ -24,7 +24,6 @@ class ProfileFilterView : UIView  {
         cv.dataSource = self
         return cv
         
-        
     }()
     
     //Mark: - Lifestyle

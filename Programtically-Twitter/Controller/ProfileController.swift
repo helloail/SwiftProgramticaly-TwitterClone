@@ -142,7 +142,10 @@ extension ProfileController : ProfileHeaderDelegate {
     func handleProfileFollower(_ header: ProfileHeader) {
         
         if user.isCurretUser {
-            print("LOGCAT : Show edit profile controller")
+            let controller = EditProfileController(user: user)
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
             return
         } else {
             if user.isFollowed {
@@ -157,6 +160,7 @@ extension ProfileController : ProfileHeaderDelegate {
                     print("LOGCAT : FOLLOWing")
                     self.user.isFollowed = true
                     self.collectionView.reloadData()
+                    NotificationService.shared.uploadNotification(type: .follow, user: self.user)
                 }
             }
         }

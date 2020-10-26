@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-
+import ActiveLabel
 
 class UploadTweetController: UIViewController {
     
@@ -43,10 +43,11 @@ class UploadTweetController: UIViewController {
         return iv
     }()
     
-    private lazy var replylabel : UILabel = {
-        let label = UILabel()
+    private lazy var replylabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.tintColor = .lightGray
+        label.mentionColor = .twitterBlue
         label.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
         return label
     }()
@@ -96,6 +97,10 @@ class UploadTweetController: UIViewController {
                 print("LOGCAT : TWEEET error \(error.localizedDescription)")
                 return
             }
+            if case .reply(let tweet) = self.config{
+                NotificationService.shared.uploadNotification(type: .reply, tweet: tweet)
+            }
+            
             self.dismiss(animated: true, completion: nil)
         }
         
@@ -109,6 +114,7 @@ class UploadTweetController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .white
         configureNavigationBar()
+        configureMentionHandler()
         
         guard let imageurl = URL(string: user.profileImageUrl) else {
             return
@@ -142,5 +148,11 @@ class UploadTweetController: UIViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightbarbutton)
+    }
+    
+    func configureMentionHandler()  {
+        replylabel.handleMentionTap { userhandler in
+            
+        }
     }
 }

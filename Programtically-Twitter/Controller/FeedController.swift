@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SDWebImage
+import Firebase
 
 class FeedCOntroller: UICollectionViewController {
     
@@ -24,8 +25,6 @@ class FeedCOntroller: UICollectionViewController {
         }
     }
     
-    
-    
     //MARK: - Liofecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +35,45 @@ class FeedCOntroller: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
-        
         navigationController?.navigationBar.isHidden = false
+        
+        
+    }
+    
+    @objc func handlerrefresh (){
+        fetchTweet()
     }
     
     
     func fetchTweet()  {
-        TweetService.shared.fetchtweet { [self] tweet in
-            self.tweets = tweet
+        collectionView.refreshControl?.beginRefreshing()
+        TweetService.shared.fetchtweet { tweets in
+            self.tweets = tweets.sorted(by: {$0.timestamp > $1.timestamp})
+            self.checkIfUserLikedTweets()
+//            self.tweets = tweets.sorted(by: {$0.timestamp > $1.timestamp})
+//
+//            self.tweets = tweets.sorted(by: { (tweet1, tweet2) -> Bool in
+//                return tweet1.timestamp > tweet2.timestamp
+//            })
+            
+            self.collectionView.refreshControl?.endRefreshing()
         }
+    }
+    
+    func checkIfUserLikedTweets()  {
+        
+        self.tweets.forEach { (tweet) in
+            TweetService.shared.chckIFUserLikedTweettweet(tweet) { (didlike) in
+                
+                guard didlike == true else {return}
+                if let index = self.tweets.firstIndex(where: {$0.tweetID == tweet.tweetID}){
+                    
+                    self.tweets[index].didlike = true
+                }
+                
+            }
+        }
+        
     }
     
     
@@ -59,6 +88,10 @@ class FeedCOntroller: UICollectionViewController {
         imageview.contentMode = .scaleAspectFit
         imageview.setDimensions(width: 44, height: 44)
         navigationItem.titleView = imageview
+        
+        let refreshcontrol = UIRefreshControl()
+        refreshcontrol.addTarget(self, action: #selector(handlerrefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshcontrol
         
     }
     
@@ -119,6 +152,32 @@ extension FeedCOntroller : UICollectionViewDelegateFlowLayout {
 //MARK: - TweetCellDelegate
 
 extension FeedCOntroller : TweetCellDelegate {
+    func handleFetchUser(withusername username: String) {
+        UserService.shared.fetchUser(withusername: username) {  user in
+            let controller = ProfileController(user: user)
+            self.navigationController?.pushViewController(controller, animated: true)
+            
+        }
+    }
+    
+    func handleliketapped(_ cell: TweetCell) {
+        guard let tweet = cell.tweets else {
+            return
+        }
+        
+        
+        TweetService.shared.liketweet(tweet: tweet) { (err, ref) in
+            cell.tweets?.didlike.toggle()
+            let likes = tweet.didlike ? tweet.likes - 1 : tweet.likes + 1
+            cell.tweets?.likes = likes
+            
+            //only upload notification if tweet is being liked
+            guard !tweet.didlike else {return}
+            NotificationService.shared.uploadNotification(type : .like, tweet: tweet)
+        }
+        
+    }
+    
     func handlerreplytapped(_ cell: TweetCell) {
         guard  let tweet = cell.tweets else {
             return

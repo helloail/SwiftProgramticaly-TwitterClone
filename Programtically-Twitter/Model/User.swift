@@ -18,14 +18,19 @@ struct User {
     var stats : userRelationStat?
     
     
+    
     var isCurretUser : Bool {
         return Auth.auth().currentUser?.uid == uid
     }
     
+    var imagerURL : URL {
+        return URL(string: profileImageUrl)!
+    }
+    
+    
     
     init (uid : String, dictionary : [String : AnyObject]){
         self.uid = uid
-        
         self.fullname = dictionary["fullname"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
         self.username = dictionary["username"] as? String ?? ""

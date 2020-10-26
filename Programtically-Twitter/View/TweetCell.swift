@@ -7,11 +7,14 @@
 
 import Foundation
 import UIKit
+import ActiveLabel
 
 
 protocol TweetCellDelegate : class {
     func handlerprofileimagetapped(_ cell : TweetCell)
     func handlerreplytapped(_ cell : TweetCell)
+    func handleliketapped(_ cell : TweetCell)
+    func handleFetchUser(withusername username : String )
     
 }
 
@@ -21,6 +24,7 @@ class TweetCell: UICollectionViewCell {
     var tweets : Tweet? {
         didSet{
             configure()
+            configureMentionHandler()
         }
     }
     
@@ -41,20 +45,21 @@ class TweetCell: UICollectionViewCell {
         return iv
     }()
     
-    private let captionlabel : UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.numberOfLines = 0
-        label.text = "test caption"
-        return  label
-    }()
-//
-    private let infolabel : UILabel = {
-        let label = UILabel()
+
+    private let infolabel : ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = "test @test "
+        label.mentionColor = .twitterBlue
         return label
+    }()
+    
+    private let captionlabel : ActiveLabel = {
+        let label = ActiveLabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.hashtagColor = .twitterBlue
+        label.mentionColor = .twitterBlue
+        label.numberOfLines = 0
+        return  label
     }()
     
     private lazy var commentbutton : UIButton = {
@@ -136,14 +141,14 @@ class TweetCell: UICollectionViewCell {
     
     @objc func HandlerComment(){
         
+        delegate?.handlerreplytapped(self)
     }
     
-    
     @objc func HandlerRetweet(){
-        delegate?.handlerreplytapped(self)
         
     }
     @objc func HandlerLike(){
+        delegate?.handleliketapped(self)
         
     }
     @objc func HandlerShared(){
@@ -167,6 +172,15 @@ class TweetCell: UICollectionViewCell {
         profileimageview.sd_setImage(with: viewmodel.profileimage)
         infolabel.attributedText = viewmodel.userinfotext
         
+        likebutton.tintColor = viewmodel.likeButtonTintCOlor
+        likebutton.setImage(viewmodel.likeButtonImage, for: .normal)
         
+    }
+    
+    
+    func configureMentionHandler()  {
+        captionlabel.handleMentionTap { username in
+            self.delegate?.handleFetchUser(withusername: username)
+        }
     }
 }

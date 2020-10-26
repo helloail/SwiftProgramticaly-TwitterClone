@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol TweetHeaderDelegate : class {
     func showActionSheet()
@@ -42,7 +43,6 @@ class TweetHeader: UICollectionReusableView {
     private let fullnamelabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.text = "kadal"
         return label
     }()
     
@@ -50,15 +50,15 @@ class TweetHeader: UICollectionReusableView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .lightGray
-        label.text = "@kadal"
         return label
     }()
     
-    private let captionlabel: UILabel = {
-        let label = UILabel()
+    private let captionlabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 20)
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         label.numberOfLines = 0
-        label.text = "kadal nya banyak"
         return label
     }()
     
@@ -67,7 +67,6 @@ class TweetHeader: UICollectionReusableView {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
         label.textAlignment = .left
-        label.text = "6:33 - 1/12/2020"
         return label
     }()
     
@@ -224,7 +223,7 @@ class TweetHeader: UICollectionReusableView {
         
         captionlabel.text = viewmodel.tweet.caption
         fullnamelabel.text = viewmodel.user.fullname
-        usernamelabel.text = viewmodel.user.username
+        usernamelabel.text = "@\(viewmodel.user.username)"
         profileimageview.sd_setImage(with: viewmodel.profileimage)
         datelabel.text = viewmodel.headerTtimestamp
         retweetlabel.attributedText = viewmodel.retweetAtributtedString

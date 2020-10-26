@@ -33,11 +33,13 @@ struct ProfileHeaderViewModel {
         }
         
         if !user.isFollowed && !user.isCurretUser{
-            return "Following"
+            
+            return "Follow"
         }
         
         if user.isFollowed {
-            return "Follow"
+            
+            return "Following"
         }
         return "Loading"
     }

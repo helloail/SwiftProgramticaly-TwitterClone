@@ -11,7 +11,7 @@ import UIKit
 class CaptionTextView: UITextView {
     
     
-    //Mark - lifecycle
+    //Mark - Properties
     let placeholderlabel : UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)

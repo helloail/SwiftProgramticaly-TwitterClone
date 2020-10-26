@@ -54,7 +54,7 @@ class MainTabViewController: UITabBarController {
         let nav2 = templateNavigationController(image: UIImage(named: "search_unselected"), rootviewcontroller: explorer)
         
         let notification = NotificationController()
-        let nav3 = templateNavigationController(image: UIImage(named: "search_unselected"), rootviewcontroller: notification)
+        let nav3 = templateNavigationController(image: UIImage(named: "like"), rootviewcontroller: notification)
       
         let convertation = ConvertationController()
         let nav4 = templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1"), rootviewcontroller: convertation)
